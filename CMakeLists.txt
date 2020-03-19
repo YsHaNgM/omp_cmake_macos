@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.12)
 project(openmptest CXX)
 
 add_executable(sample sample.cpp)
@@ -8,7 +8,7 @@ option(CMAKECATCHMPI_USE_OPENMP "Enable OpenMP" ON)
 
 if(CMAKECATCHMPI_USE_OPENMP)
     find_package(OpenMP)
-
+    # Below was needed in macos and cmake 3.13
     # # If OpenMP wasn't found, try if we can find it in the default Macports location
     # if((NOT OPENMP_FOUND) AND (NOT OPENMP_CXX_FOUND) AND EXISTS "/opt/local/lib/libomp/libomp.dylib")
     #     set(OpenMP_C_FLAGS "-Xpreprocessor -fopenmp -I/opt/local/include/libomp/")
@@ -52,6 +52,6 @@ else()
     endif()
 endif(CMAKECATCHMPI_USE_OPENMP)
 
-# PUBLIC OpenMP::OpenMP_CXX is needed since cmake 3.16
+# PUBLIC OpenMP::OpenMP_CXX is needed for macos since cmake 3.16
 target_link_libraries(sample PUBLIC OpenMP::OpenMP_CXX)
 # ${OpenMP_CXX_FLAGS} ${OpenMP_libomp_LIBRARY} ${OpenMP_CXX_LIBRARIES}
